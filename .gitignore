@@ -1,0 +1,5 @@
+# files ignored by git
+
+# directory with compiled/executable output
+out/
+
