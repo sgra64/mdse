@@ -61,7 +61,7 @@ summarized:
 
 1. [Setup](#1-setup)
 
-2. [Build and Run](#2-buil-and-Run)
+2. [Build and Run](#2-build-and-run)
 
 3. [Completing Numbers Functions](#3-completing-numbers-functions)
 
