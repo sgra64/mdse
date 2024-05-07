@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "*.rc": "shellscript",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "tuple": "cpp",
+        "iosfwd": "cpp",
+        "vector": "cpp",
+        "numbers": "cpp"
     }
 }
