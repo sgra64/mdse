@@ -6,14 +6,18 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-fdiagnostics-color=always",
+                "@.vscode/cc_opts",
                 "-g",
-                "${file}",
+                // "${file}",
+                "./src/main.cpp",
                 "-o",
                 // "${fileDirname}/${fileBasenameNoExtension}"
-                "${workspaceFolder}/out/${fileBasenameNoExtension}.out"
+                // "./${fileBasenameNoExtension}.out",
+                "${workspaceFolder}/main.out",
+                "@.vscode/cc_objs"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [
                 "$gcc"

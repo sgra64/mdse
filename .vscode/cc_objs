@@ -1,0 +1,4 @@
+out/demo/demo.o
+out/numbers/numbers.o
+out/numbers/numbers_functions.o
+out/numbers/ostream_helper.o

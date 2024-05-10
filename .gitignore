@@ -5,9 +5,14 @@
 # example: https://github.com/github/gitignore/blob/master/Java.gitignore
 #------------------------------------------------------------------------------
 
-# ignore generated directories and compiled output
+# ignore solution files from being checked-in
+**/*_sol.h
+**/*_sol.cpp
+
+# ignore generated directories and compiled output, executables, e.g. main.out
 bin/
 out/
+*.out
 
 # ignore archives
 *.7z

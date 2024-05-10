@@ -8,18 +8,18 @@ namespace Numbers {
     // numbers with duplicates and negative numbers
     const int numbers_arr[]   = {-2, 4, 9, 4, -3, 4, 9, 5};
 
-    const vector<int> numbers = {-2, 4, 9, 4, -3, 4, 9, 5};
+    const vector<int> &numbers = {-2, 4, 9, 4, -3, 4, 9, 5};
 
     // no duplicates and no negative numbers
-    const vector<int> numb_1 = {8, 10, 7, 2, 14, 5, 4};
+    const vector<int> &numb_1 = {8, 10, 7, 2, 14, 5, 4};
 
-    const vector<int> numb_2 = {   // n=2, 24 numbers
+    const vector<int> &numb_2 = {   // n=2, 24 numbers
         371,  682,  446,  754,  205,  972,  600,  163,  541,  672,
          27,  170,  226,    7,  190,  639,   87,  773,  651,  370,
         125,  774,  903,  636//,225,  463,  286,  569,  384,    9,
     }; // add more numbers to find more  solutions
 
-    const vector<int> numb_3 = {   // n=3, 63 numbers
+    const vector<int> &numb_3 = {   // n=3, 63 numbers
         799, 2377,  936, 3498, 1342,  493, 1635, 4676,  1613, 3851,
         1445, 4506, 3346,    7, 2141, 2064, 1491,  908,   78, 3325,
         1756, 3691,   23, 1995, 1800,   15, 2784, 4305,   36, 2532,
@@ -61,12 +61,18 @@ namespace Numbers {
         cout << numbers << " --> find_first: " << res5 << endl;
 
         // Aufgabe 6:
-        vector<int> res6 = find_all(14, numbers);
+        vector<int> res6 = find_all(4, numbers);
         cout << numbers << " --> find_all: " << res6 << endl;
 
         // Aufgabe 7:
-        vector<pair<int, int>> res7 = find_sums(14, numbers);
-        cout << numbers << " --> find_sums: " << res7 << endl;
+        int sum=12;
+        vector<pair<int, int>> res7 = find_sums(12, numb_1);
+        cout << numb_1 << " --> find_sums(" << sum << "): " << res7 << endl;
+        //
+        // avoid duplicates and mirror pairs
+        const vector<int> &numb_11 = {8, 10, 7, 2, 10, 5, 4, 9, 3, 3, 9};
+        res7 = find_sums(sum, numb_11);
+        cout << numb_11 << " --> find_sums(" << sum << "): " << res7 << endl;
 
         // Aufgabe 8:
         set<set<int>> res8 = find_all_sums(14, numbers);

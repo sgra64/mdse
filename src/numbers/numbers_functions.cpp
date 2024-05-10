@@ -1,6 +1,9 @@
 #include <iostream>
 #include "numbers.h"
 using namespace std;
+//
+#define SOLUTION_FILE "numbers_sol.cpp"
+#if ! __has_include(SOLUTION_FILE)
 
 namespace Numbers {
 
@@ -163,3 +166,6 @@ namespace Numbers {
         return *result;
     }
 }
+#else
+#include SOLUTION_FILE
+#endif

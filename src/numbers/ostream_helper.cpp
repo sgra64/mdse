@@ -23,12 +23,12 @@ namespace Numbers {
     ostream& operator<< (std::ostream& out, const vector<int> &v) {
         if( ! v.empty()) {
             out << "[";
-            //v20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
+            // C++20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
             for (long unsigned i=0; i < v.size(); i++) {
                 if(i > 0 && i % 10 == 0) {
                     cout << endl << " ";
                 }
-                if(v.size() > 10) {
+                if(v.size() > 12) {
                     cout << std::setw(4);   // right-align numbers to width 4
                 }
                 cout << v[i] << (i < v.size()-1? ", " : "");
@@ -46,7 +46,7 @@ namespace Numbers {
     ostream& operator<< (std::ostream& out, const vector<pair<int, int>> &v) {
         if( ! v.empty()) {
             out << "[";
-            //v20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
+            // C++20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
             for (long unsigned i=0; i < v.size(); i++) {
                 if(i > 0 && i % 10 == 0) {
                     cout << endl << " ";
