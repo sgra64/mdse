@@ -69,14 +69,15 @@ namespace Numbers {
         vector<pair<int, int>> res7 = find_sums(12, numb_1);
         cout << numb_1 << " --> find_sums(" << sum << "): " << res7 << endl;
         //
-        // avoid duplicates and mirror pairs
+        // avoid duplicates and finding mirror pairs, e.g. [3, 9] and [9, 3]
         const vector<int> &numb_11 = {8, 10, 7, 2, 10, 5, 4, 9, 3, 3, 9};
         res7 = find_sums(sum, numb_11);
         cout << numb_11 << " --> find_sums(" << sum << "): " << res7 << endl;
 
         // Aufgabe 8:
-        set<set<int>> res8 = find_all_sums(14, numbers);
-        cout << numbers << " --> find_all_sums: " << res8 << endl;
+        sum = 14;
+        set<set<int>> res8 = find_all_sums(14, numb_1);
+        cout << numbers << " --> find_all_sums(" << sum << "): " << res8 << endl;
 
         return EXIT_SUCCESS;
     }

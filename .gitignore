@@ -8,6 +8,7 @@
 # ignore solution files from being checked-in
 **/*_sol.h
 **/*_sol.cpp
+makefile_solutions.mk
 
 # ignore generated directories and compiled output, executables, e.g. main.out
 bin/

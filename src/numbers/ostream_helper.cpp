@@ -21,21 +21,18 @@ namespace Numbers {
      * @param v vector to print
      */
     ostream& operator<< (std::ostream& out, const vector<int> &v) {
-        if( ! v.empty()) {
-            out << "[";
-            // C++20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
-            for (long unsigned i=0; i < v.size(); i++) {
-                if(i > 0 && i % 10 == 0) {
-                    cout << endl << " ";
-                }
-                if(v.size() > 12) {
-                    cout << std::setw(4);   // right-align numbers to width 4
-                }
-                cout << v[i] << (i < v.size()-1? ", " : "");
+        out << "[";
+        // C++20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
+        for (long unsigned i=0; i < v.size(); i++) {
+            if(i > 0 && i % 10 == 0) {
+                cout << endl << " ";
             }
-            out << "]";
+            if(v.size() > 12) {
+                cout << std::setw(4);   // right-align numbers to width 4
+            }
+            cout << v[i] << (i < v.size()-1? ", " : "");
         }
-        return out;
+        return out << "]";
     }
 
     /**
@@ -44,18 +41,15 @@ namespace Numbers {
      * @param v vector to print
      */
     ostream& operator<< (std::ostream& out, const vector<pair<int, int>> &v) {
-        if( ! v.empty()) {
-            out << "[";
-            // C++20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
-            for (long unsigned i=0; i < v.size(); i++) {
-                if(i > 0 && i % 10 == 0) {
-                    cout << endl << " ";
-                }
-                cout << v[i] << (i < v.size()-1? ", " : "");
+        out << "[";
+        // C++20: std::ranges::copy(v, std::ostream_iterator<int>(out, ", "));
+        for (long unsigned i=0; i < v.size(); i++) {
+            if(i > 0 && i % 10 == 0) {
+                cout << endl << " ";
             }
-            out << "]";
+            cout << v[i] << (i < v.size()-1? ", " : "");
         }
-        return out;
+        return out << "]";
     }
 
     /**
@@ -64,15 +58,12 @@ namespace Numbers {
      * @param s set to print
      */
     ostream& operator<< (std::ostream& out, const set<int> &s)  {
-        if( ! s.empty()) {
-            out << "{";
-            long unsigned i = 0;
-            for(const int &n : s) {
-                cout << n << (i++ < s.size()-1? ", " : "");
-            }
-            out << "}";
+        out << "{";
+        unsigned int i = 0;
+        for(const int &n : s) {
+            cout << n << (i++ < s.size()-1? ", " : "");
         }
-        return out;
+        return out << "}";
     }
 
     /**
@@ -81,14 +72,11 @@ namespace Numbers {
      * @param s set to print
      */
     ostream& operator<< (std::ostream& out, const set<set<int>> &s) {
-        if( ! s.empty()) {
-            out << "{";
-            long unsigned i = 0;
-            for(const set<int> &n : s) {
-                cout << n << (i++ < s.size()-1? ", " : "");
-            }
-            out << "}";
+        out << "{";
+        unsigned int i = 0;
+        for(const set<int> &n : s) {
+            cout << n << (i++ < s.size()-1? ", " : "");
         }
-        return out;
+        return out << "}";
     }
 }
