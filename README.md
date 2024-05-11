@@ -84,7 +84,19 @@ This assignment adds package `numbers` to the project:
 ```sh
 --<cpp>:
  |
+ +- .gitignore                  # files to be ignored by git
  +-- makefile                   # project makefile
+ +-- makefile_addons.mk         # makefile addon
+ |
+ +--<.devcontainer>             # central devcontainer configuration files
+ |   +-- devcontainer.json      # container build configuration
+ |   +-- Dockerfile             # Dockerfile to build the container image
+ |
+ +--<.vscode>                   # VSCode IDE files
+ |   +-- c_cpp_properties.json  # VSCode C++ configuration
+ |   +-- settings.json          # central VSCode configuration file
+ |   +-- launch.json, tasks.json          # launch and task configurations
+ |   +-- cc_objs, cc_opts       # gcc options files used in makefile
  |
  +--<src>                       # source code
  |   +-- main.h                 # header-file with project configuration
