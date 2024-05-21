@@ -73,10 +73,11 @@ namespace Numbers {
      */
     ostream& operator<< (std::ostream& out, const set<set<int>> &s) {
         out << "{";
+        bool ml = s.size() > 5;     // multi-line output for larger sets
         unsigned int i = 0;
         for(const set<int> &n : s) {
-            cout << n << (i++ < s.size()-1? ", " : "");
+            cout << (ml? "\n  - " : "") << n << (i++ < s.size()-1? ", " : "");
         }
-        return out << "}";
+        return out << (ml? "\n}" : "}");
     }
 }

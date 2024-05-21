@@ -13,14 +13,14 @@ namespace Numbers {
     // no duplicates and no negative numbers
     const vector<int> &numb_1 = {8, 10, 7, 2, 14, 5, 4};
 
-    const vector<int> &numb_2 = {   // n=2, 24 numbers
+    const vector<int> &numb_2 = {   // 24 numbers
         371,  682,  446,  754,  205,  972,  600,  163,  541,  672,
-         27,  170,  226,    7,  190,  639,   87,  773,  651,  370,
-        125,  774,  903,  636//,225,  463,  286,  569,  384,    9,
+        27,  170,  226,    7,  190,  639,   87,  773//,  651,  370,
+        //125,  774,  903,  636, 225,  463,  286,  569,  384,    9,
     }; // add more numbers to find more  solutions
 
-    const vector<int> &numb_3 = {   // n=3, 63 numbers
-        799, 2377,  936, 3498, 1342,  493, 1635, 4676,  1613, 3851,
+    const vector<int> &numb_3 = {   // 63 numbers
+         799, 2377,  936, 3498, 1342,  493, 1635, 4676, 1613, 3851,
         1445, 4506, 3346,    7, 2141, 2064, 1491,  908,   78, 3325,
         1756, 3691,   23, 1995, 1800,   15, 2784, 4305,   36, 2532,
         4292, 4802, 2522, 4183, 3261, 2610,  803, 2656,  498, 1668,
@@ -76,8 +76,13 @@ namespace Numbers {
 
         // Aufgabe 8:
         sum = 14;
-        set<set<int>> res8 = find_all_sums(14, numb_1);
-        cout << numbers << " --> find_all_sums(" << sum << "): " << res8 << endl;
+        set<set<int>> res8 = find_all_sums(sum, numb_1);
+        cout << " --> find_all_sums(" << sum << "): " << res8 << ", solutions: " << res8.size() << endl;
+
+        // Aufgabe 8+:
+        // sum = 999;
+        // set<set<int>> res8XXL = find_all_sums(sum, numb_2);
+        // cout << " --> find_all_sums(" << sum << "): " << res8XXL << ", solutions: " << res8XXL.size() << endl;
 
         return EXIT_SUCCESS;
     }
