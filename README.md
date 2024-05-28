@@ -1,651 +1,294 @@
 <!-- check-out single branch from repo:
-        git clone -b B12 --single-branch https://github.com/sgra64/mdse.git
+        git clone -b G1 --single-branch https://github.com/sgra64/mdse.git
  -->
 
-# Assignment B2: Numbers
+# Assignment G1: Graphs (shortest path)
 
-Assignment B2 develops functions for calculations over arrays of numbers.
+A *[Graph](https://en.wikipedia.org/wiki/Graph_theory)*
+is a set of *nodes* (vertices) and *edges* connecting nodes G = { n ∈ N, e ∈ E }.
+A *weighted Graph* has *weights* associated with egdes.
 
-Numbers are defined in
-[src/numbers/numbers.cpp](https://github.com/sgra64/mdse/blob/B12/src/numbers/numbers.cpp):
+The task is to find the *"shortest path"* between a *start node* `S` and
+an *end node* `E`. The attribute *"shortest"* refers to the minimum added weight
+of edges. The problem has many useful applications, e.g. in navigation systems.
 
-```c++
-// numbers with duplicates and negative numbers
-const int numbers_arr[]   = {-2, 4, 9, 4, -3, 4, 9, 5};
+<img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/graph_1.jpg" alt="drawing" width="800"/>
 
-const vector<int> numbers = {-2, 4, 9, 4, -3, 4, 9, 5};
+*Edsger W. Dijkstra* (1930-2003,
+[bio](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra))
+was a Dutch computer scientist, software engineer, professor of Computer Science
+at the Univerity of Austin, Texas who developed
+[Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+to find a shortest
+path in an undirected, weighted graph. He received the
+[Turing Award](https://en.wikipedia.org/wiki/Turing_Award)
+for this and numerous other contributions in computer science in 1972.
 
-// no duplicates and no negative numbers
-const vector<int> numb_1 = {8, 10, 7, 2, 14, 5, 4};
 
-const vector<int> &numb_2 = {   // 24 numbers
-    371,  682,  446,  754,  205,  972,  600,  163,  541,  672,
-     27,  170,  226,    7,  190,  639,   87,  773//,  651,  370,
-    //125,  774,  903,  636, 225,  463,  286,  569,  384,    9,
-}; // add more numbers to find more  solutions
+| aaa | bbb |
+| aaa | bbb |
+| aaa | bbb |
 
-const vector<int> numb_3 = {   // 63 numbers
-    799, 2377,  936, 3498, 1342,  493, 1635, 4676,  1613, 3851,
-    1445, 4506, 3346,    7, 2141, 2064, 1491,  908,   78, 3325,
-    1756, 3691,   23, 1995, 1800,   15, 2784, 4305,   36, 2532,
-    4292, 4802, 2522, 4183, 3261, 2610,  803, 2656,  498, 1668,
-    2038, 2194,  440,  463, 4047, 4235, 3931,  756,  521, 4042,
-    3302,  485, 1002,  408, 4691, 3387, 3104, 3658, 2241, 4382,
-    1220, 3656,  500,
-};
-```
+<table>
+<td>
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Edsger_Wybe_Dijkstra.jpg" alt="drawing" width="400"/>
+</td>
+<td>
+*Edsger W. Dijkstra* (1930-2003,
+[bio](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra))
+was a Dutch computer scientist, software engineer, professor of Computer Science
+at the Univerity of Austin, Texas who developed
+[Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+to find a shortest
+path in an undirected, weighted graph. He received the
+[Turing Award](https://en.wikipedia.org/wiki/Turing_Award)
+for this and numerous other contributions in computer science in 1972.
+</td>
+</table>
 
-Functions are defined in
-[numbers.h](https://github.com/sgra64/mdse/blob/B12/src/numbers/numbers.h),
-summarized:
 
-- `sum(numbers)`                    - calculate sum of numbers[]              (0.5Pt)
-
-- `sum_positive_even_numbers(numbers)` - sum of positive even numbers         (0.5Pt)
-
-- `sum_recursive(numbers)`            - sum of numbers[] without using loops    (0.5Pt)
-
-- `find_first(int x, numbers)`      - find index of first occurrence of x     (0.5Pt)
-
-- `find_last(int x, numbers)`       - find index of last occurrence of x      (0.5Pt)
-
-- `find_all(int x, numbers)`        - find all indices of x in numbers        (0.5Pt)
-
-- `find_sums(int sum, numbers)`     - find all pairs {a, b} with a + b = sum  (1Pt)
-
-- `find_all_sums(int sum, numbers)` - find all combinations of numbers that add to sum (2Pt)
+The algorithm was used in a Bachelor thesis by
+[Steffen Ansorge](https://www.linkedin.com/in/steffenansorge):
+*"Planning and development of a system for route planning with unreliable position
+data of intermediate stops"*,
+[.pdf](https://drive.google.com/file/d/1vceT1_HE0IxMuiheIbkkzwUEKi106gMX).
 
 
 &nbsp;
+
 ## Content
 
 1. [Setup](#1-setup)
 
-2. [Build and Run](#2-build-and-run)
+2. [Data Modeling](#2-data-modeling)
 
-3. [Completing Numbers Functions](#3-completing-numbers-functions)
-
-4. [Examples and Solutions](#4-examples-and-solutions)
-    - 4.1 [*sum()*](#41-sum)
-    - 4.2 [*sum_positive_even_numbers()*](#42-sum_positive_even_numbers)
-    - 4.3 [*sum_recursive()*](#43-sum_recursive)
-    - 4.4 [*find_first()*](#44-find_first)
-    - 4.5 [*find_last()*](#45-find_last)
-    - 4.6 [*find_all()*](#46-find_all)
-    - 4.7 [*find_sums()*](#47-find_sums)
-    - 4.8 [*find_all_sums()*](#48-find_all_sums)
+3. [Shortest-Path Algorithm](#3-shortest-path-algorithm)
 
 
 &nbsp;
+
 ## 1. Setup
 
-This assignment adds package `numbers` to the project:
+Code for the project is distributed through branch
+[G1-graphs](https://github.com/sgra64/mdse/tree/G1-graphs)
+in the code repository.
+
+Setup will integrate (merge) this branch into your project using the
+[git](https://en.wikipedia.org/wiki/Git) source code control system.
+
+You should have `src` files in the project that can be shown in the
+(dev-container) terminal:
 
 ```sh
---<cpp>:
- |
- +- .gitignore                  # files to be ignored by git
- +-- makefile                   # project makefile
- +-- makefile_addons.mk         # makefile addon
- |
- +--<.devcontainer>             # central devcontainer configuration files
- |   +-- devcontainer.json      # container build configuration
- |   +-- Dockerfile             # Dockerfile to build the container image
- |
- +--<.vscode>                   # VSCode IDE files
- |   +-- c_cpp_properties.json  # VSCode C++ configuration
- |   +-- settings.json          # central VSCode configuration file
- |   +-- launch.json, tasks.json          # launch and task configurations
- |   +-- cc_objs, cc_opts       # gcc options files used in makefile
- |
- +--<src>                       # source code
- |   +-- main.h                 # header-file with project configuration
- |   +-- main.cpp               # cpp-file with main() function
- |   |
- |   +--<demo>                  # source code of 'demo' sub-project
- |   |   +-- demo.h             # header-file
- |   |   +-- demo.cpp           # cpp-file with Demo::main() function
- |   |
- |   +--<numbers>               # new 'Numbers' package
- |       +-- numbers.h              # header-file with function declarations
- |       +-- numbers_functions.cpp  # cpp-file with function implementations
- |       +-- numbers.cpp            # cpp-file with Numbers::main() function
- |       +-- ostream_helper.h       # helper to print vectors and sets
- |       +-- ostream_helper.cpp     # helper implementation
- |
- +--<out>                       # compiled code
- |   +-- main.o                 # compiled main.cpp
- |   |
- |   +--<demo>
- |   |   +-- demo.o
- |   |
- |   +--<numbers>
- |       +-- numbers.o, numbers_functions.o, ostream_helper.o
- |
-```
-
-
-&nbsp;
-## 2. Build and Run
-
-[*make*](https://www.gnu.org/software/make/manual/html_node/Introduction.html)
-is a *build tool* for C and C++.
-
-To build the project, run:
-
-```sh
-make
+find src                    # show current source files in dev-container
 ```
 
 Output:
 
 ```
-create out/
-g++ -Isrc/demo -Isrc/numbers -g -c -Wall -c src/main.cpp -o out/main.o
-create out/demo/
-g++ -Isrc/demo -Isrc/numbers -g -c -Wall -c src/demo/demo.cpp -o out/demo/demo.o
-create out/numbers/
-g++ -Isrc/demo -Isrc/numbers -g -c -Wall -c src/numbers/numbers.cpp -o out/numbers/numbers.o
-g++ -Isrc/demo -Isrc/numbers -g -c -Wall -c src/numbers/numbers_functions.cpp -o out/numbers/numbers_functions.o
-g++ -Isrc/demo -Isrc/numbers -g -c -Wall -c src/numbers/ostream_helper.cpp -o out/numbers/ostream_helper.o
-g++ -o main out/main.o out/demo/demo.o out/numbers/numbers.o out/numbers/numbers_functions.o out/numbers/ostream_helper.o
+src
+src/numbers
+src/numbers/ostream_helper.h
+src/numbers/numbers.h
+src/numbers/numbers_functions.cpp
+src/numbers/numbers.cpp
+src/numbers/ostream_helper.cpp
+src/demo
+src/demo/demo.h
+src/demo/demo.cpp
+src/main.h
+src/main.cpp
 ```
 
-The process creates compiled files in the `out` directory:
+`makefile` only has dependencies for `numbers` and `demo`.
+
+*"Integration"* (merge) of code means that new files are added from the source
+and *modifications* are made to existing files, e.g. `graphs` dependencies are
+added to `makefile`. Therefore, *merge* is not just a copy. Conflicts may occur
+that need to be resolved.
+
+Following steps will put the project under `git`-control (if not), add the link
+to the remote source of the branch to be added, load (fetch) and merge it into
+the current state of the project.
 
 ```sh
-find out
+[ -d .git ] || git init         # initialize git, if project is not yet under git control
+
+# add link of remote repository under name 'mdse-repo'
+git remote add mdse-repo https://github.com/sgra64/mdse.git
+
+# fetch branch G1-graphs from the remote repository
+git fetch mdse-repo G1-graphs:G1-graphs
+
+# merge content of fetched branch into current branch (branch: main)
+git merge --allow-unrelated-histories --strategy-option theirs G1-graphs
 ```
 
-Output:
-
-```
-out
-out/numbers
-out/numbers/numbers.o
-out/numbers/numbers_functions.o
-out/numbers/ostream_helper.o
-out/demo
-out/demo/demo.o
-out/main.o
-```
-
-The final step of the *build process* links all compiled files to the main
-executable file:
+Inspecting content of files,
 
 ```sh
-g++ -o main out/main.o out/demo/demo.o out/numbers/numbers.o out/numbers/numbers_functions.o out/numbers/ostream_helper.o
+find src                    # show source files in dev-container after merge
 ```
 
-The result of the *build process* is file `main` in the project directory:
+new files under `src/graphs` appear:
+
+```
+src
+src/graphs
+src/graphs/shortest_path.cpp
+src/graphs/main.cpp
+src/graphs/graph.cpp
+src/graphs/graph.h
+src/numbers
+src/numbers/ostream_helper.h
+src/numbers/numbers.h
+src/numbers/numbers_functions.cpp
+src/numbers/numbers.cpp
+src/numbers/ostream_helper.cpp
+src/demo
+src/demo/demo.h
+src/demo/demo.cpp
+src/main.h
+src/main.cpp
+```
+
+`makefile` was modified in the merge to include new dependencies for `graphs`-files.
+Compare differences that were made in `makefile`:
 
 ```sh
-ls -la
+git diff HEAD~1 HEAD makefile
+```
+```
 ```
 
-```
--rwxr-xr-x 1 vscode vscode 519064 May  7 23:03 main
-```
-
-
-Run the program with:
+Show which files were modified in the merge (M: modified, A: added, D: deleted):
 
 ```sh
-./main
+git diff HEAD~1 --name-status   # show differences made by the merge
+```
+```
 ```
 
-The program prints demo output created in
-[src/numbers/numbers.cpp](https://github.com/sgra64/mdse/blob/B12/src/numbers/numbers.cpp).
+The merge can be reset and the previous state of the project restore:
 
+```sh
+git reset --hard            # reset project to pre-merge state
 
+find src                    # files under: src/graphs are gone
 ```
-Numbers::main() in numbers.cpp:
-[-2, 4, 9, 4, -3, 4, 9, 5] --> sum: 0
-[-2, 4, 9, 4, -3, 4, 9, 5] --> sum_positive_even_numbers: 0
-[-2, 4, 9, 4, -3, 4, 9, 5] --> sum_recursive: 0
-[-2, 4, 9, 4, -3, 4, 9, 5] --> find_first: 0
-[-2, 4, 9, 4, -3, 4, 9, 5] --> find_first: 0
-[-2, 4, 9, 4, -3, 4, 9, 5] --> find_all: [0, 1, 2, 3, 4]
-[-2, 4, 9, 4, -3, 4, 9, 5] --> find_sums: [[1, 2], [7, 8]]
-[-2, 4, 9, 4, -3, 4, 9, 5] --> find_all_sums: {{0, 1, 2, 3}, {4}}
+```
 ```
 
+Of course, the merge can be repeated
 
-The *build process* is controlled by the
-[*makefile*](https://github.com/sgra64/mdse/blob/B12/makefile):
-
-```
-# source directories with header files
-INCLUDES = \
-	-Isrc/demo \
-	-Isrc/numbers
-
-# all compiled files
-OBJS = \
-	out/main.o \
-	out/demo/demo.o \
-	out/numbers/numbers.o \
-	out/numbers/numbers_functions.o \
-	out/numbers/ostream_helper.o
-
-# compiler options
-CC=g++
-CPPFLAGS=-g -c -Wall
-
-
-# main goal produces 'main' executable in project directory
-main: $(OBJS)
-	g++ -o main $(OBJS)
-
-clean:
-	rm -rf main out
-
-# rule to compile .o from .cpp files, creates subdirs in out
-out/%.o: src/%.cpp
-	@[ ! -d $(dir $@) ] && echo create $(dir $@) && mkdir -p $(dir $@) || true
-	$(CC) $(INCLUDES) $(CPPFLAGS) -c $< -o $@
-
-# file dependencies (should be generated using makedepend)
-main.cpp:  src/demo/demo.h src/numbers/numbers.h
-
-out/main.o:  src/main.h src/main.cpp
-out/demo/demo.o:  src/demo/demo.h src/demo/demo.cpp
-out/numbers/numbers.o:  src/numbers/numbers.h src/numbers/numbers.cpp
-out/numbers/numbers_functions.o:  src/numbers/numbers.h src/numbers/numbers_functions.cpp
-out/numbers/ostream_helper.o:  src/numbers/ostream_helper.h src/numbers/ostream_helper.cpp
+```sh
+git merge --allow-unrelated-histories --strategy-option theirs G1-graphs
 ```
 
 
 &nbsp;
-## 3. Completing Numbers Functions
 
-After building and running the program, functions can be completed.
+## 2. Data Modeling
 
-Implementation of functions should be performed in
-[src/numbers/numbers_functions.cpp](https://github.com/sgra64/mdse/blob/B12/src/numbers/numbers_functions.cpp):
+Graphs are not directly supported in programming languages (there are
+[Graph databases](https://en.wikipedia.org/wiki/Graph_database)).
 
-```c++
-/**
- * Aufgabe 1
- *
- * @brief return the sum of numbers.
- *
- * @param numbers numbers given
- * @return sum of numbers
- */
-int sum(const vector<int> &numbers) {
-    int result = 0;
+An efficient *data structure* must be chosen to implement a *undirected*
+graph with *weighted edges*.
 
-    /*
-     * TODO: implement function
-     */
-    return result;
-}
-```
+[Adjacency matrix](https://en.wikipedia.org/wiki/Adjacency_matrix) is one
+possibility. Adjacency matrix is a symmetric *n x n* matrix with rows and
+colums for each node. Each `cell [i,j]` holds the *weight* of the edge
+between nodes `i` and `j`.
 
-Code can be completed, e.g. with:
+Answer questions:
 
-```c++
-int sum(const vector<int> &numbers) {
-    int result = 0;
-    for(unsigned long i=0; i < numbers.size(); i++) {
-        result += numbers[i];
-    }
-    return result;
-}
-```
+1. How can an adjacency matrix be implemented?
 
-After re-building the project with:
+1. What are advantages / disadvantages of an adjacency matrix?
 
-```sh
-make
-```
+1. What is the resource (memory) use of an adjacency matrix of size *n*
+    (*n* nodes)?
 
-the program should print the correct sum:
+1. What is the effect of *undirected* edges for an adjacency matrix?
+    How much memory is "wasted"?
 
-```
-./main
-[-2, 4, 9, 4, -3, 4, 9, 5] --> sum: 30
-```
+1. What is the most frequent access pattern of matrix elements?
+    Is an adjacency matrix the best approach?
 
-Explore also with other numbers arrays: `numbers`, `numb_1`, `numb_2`, `numb_3`.
-
-Results are:
-
-```
-numbers:
-[-2, 4, 9, 4, -3, 4, 9, 5] --> sum: 30
-
-numb_1:
-[8, 10, 7, 2, 14, 5, 4] --> sum: 50
-
-numb_2:
-[ 371,  682,  446,  754,  205,  972,  600,  163,  541,  672, 
-   27,  170,  226,    7,  190,  639,   87,  773,  651,  370, 
-  125,  774,  903,  636] --> sum: 10984
-
-numb_3:
-[ 799, 2377,  936, 3498, 1342,  493, 1635, 4676, 1613, 3851, 
- 1445, 4506, 3346,    7, 2141, 2064, 1491,  908,   78, 3325, 
- 1756, 3691,   23, 1995, 1800,   15, 2784, 4305,   36, 2532, 
- 4292, 4802, 2522, 4183, 3261, 2610,  803, 2656,  498, 1668, 
- 2038, 2194,  440,  463, 4047, 4235, 3931,  756,  521, 4042, 
- 3302,  485, 1002,  408, 4691, 3387, 3104, 3658, 2241, 4382, 
- 1220, 3656,  500] --> sum: 141466
-```
-
-Complete the other functions 1.) - 8.) in
-[src/numbers/numbers_functions.cpp](https://github.com/sgra64/mdse/blob/B12/src/numbers/numbers_functions.cpp):
-
-```
-1.) sum(numbers)                    - calculate sum of numbers[].
-2.) sum_positive_even_numbers(numbers) - sum of positive even numbers
-3.) sum_recursive(numbers)            - sum of numbers[] without using loops
-4.) find_first(int x, numbers)      - find index of first occurrence of x
-5.) find_last(int x, numbers)       - find index of last occurrence of x
-6.) find_all(int x, numbers)        - find all indices of x in numbers
-7.) find_sums(int sum, numbers)     - find all pairs {a, b} with a + b = sum
-8.) find_all_sums(int sum, numbers) - find all combinations of numbers that add to sum
-```
+1. What is a [Sparse matrix](https://en.wikipedia.org/wiki/Sparse_matrix)?
+    What are advantages / disadvantages?
 
 
 &nbsp;
-## 4. Examples and Solutions
 
-This section shows some examples and solutions for *Numbers* - methods:
-
-- 4.1 [*sum()*](#41-sum)
-- 4.2 [*sum_positive_even_numbers()*](#42-sum_positive_even_numbers)
-- 4.3 [*sum_recursive()*](#43-sum_recursive)
-- 4.4 [*find_first()*](#44-find_first)
-- 4.5 [*find_last()*](#45-find_last)
-- 4.6 [*find_all()*](#46-find_all)
-- 4.7 [*find_sums()*](#47-find_sums)
-- 4.8 [*find_all_sums()*](#48-find_all_sums)
-
-
-#### 4.1 *sum()*
-
-Verify *sum()* with all numbers arrays:
-
-Results:
-
-```
-Hello, NumbersImpl
-sum('numbers': [-2, 4, 9, 4, -3, 4, 9, 5])
- - result: sum() = 30
-
-sum('numb_1': [8, 10, 7, 2, 14, 5, 4])
- - result: sum() = 50
-
-sum('numb_2')
- - result: sum() = 10984
-
-sum('numb_3')
- - result: sum() = 141466
-```
-
-
-#### 4.2 *sum_positive_even_numbers()*
-
-Verify *sum_positive_even_numbers()* with all numbers arrays:
-
-Results:
-
-```
-Hello, NumbersImpl
-sum_positive_even_numbers('numbers': [-2, 4, 9, 4, -3, 4, 9, 5])
- - result: sum_positive_even_numbers() = 12
-
-sum_positive_even_numbers('numb_1': [8, 10, 7, 2, 14, 5, 4])
- - result: sum_positive_even_numbers() = 38
-
-sum_positive_even_numbers('numb_2')
- - result: sum_positive_even_numbers() = 6492
-
-sum_positive_even_numbers('numb_3')
- - result: sum_positive_even_numbers() = 80012
-```
-
-
-#### 4.3 *sum_recursive()*
-
-Results for *sum_recursive()* are the same as for *sum()*.
-
-
-#### 4.4 *find_first()*
-
-Results:
-
-```
-find_first('numbers': [-2, 4, 9, 4, -3, 4, 9, 5])
- - result: find_first(x=4)  =  1
- - result: find_first(x=-3) =  4
- - result: find_first(x=1)  = -1
-```
-
-
-#### 4.5 *find_last()*
-
-Results:
-
-```
-find_last('numbers': [-2, 4, 9, 4, -3, 4, 9, 5])
- - result: find_last(x=4)  =  5
- - result: find_last(x=-3) =  4
- - result: find_last(x=1)  = -1
-```
-
-
-#### 4.6 *find_all()*
-
-Results:
-
-```
-find_all('numbers': [-2, 4, 9, 4, -3, 4, 9, 5])
- - result: find_all(x=4)  = [1, 3, 5]
- - result: find_all(x=-3) = [4]
- - result: find_all(x=1)  = []
-```
-
-
-#### 4.7 *find_sums()*
-
-Results:
-
-```
-find_sums('numb_1': [8, 10, 7, 2, 14, 5, 4])
- - sum=10, result: [(2,8)]
- - sum=12, result: [(5,7), (4,8), (2,10)]   (in any order)
- - sum=15, result: [(7,8), (5,10)]          (in any order)
-```
-
-
-#### 4.8 *find_all_sums()*
-
-Results:
-
-```
-find_all_sums('numb_1': [8, 10, 7, 2, 14, 5, 4])
- - find_all_sums(10): {{2, 8}, {10}}                           (in any order)
- - find_all_sums(12): {{2, 10}, {4, 8}, {5, 7}}                (in any order)
- - find_all_sums(14): {{2, 4, 8}, {2, 5, 7}, {4, 10}, {14}}    (in any order)
- - find_all_sums(15): {{2, 5, 8}, {5, 10}, {7, 8}}             (in any order)
- - find_all_sums(20): {{2, 4, 14}, {2, 8, 10}, {5, 7, 8}}      (in any order)
-```
-
-Weitere Beispiele:
-
-```
-find_all_sums('numb_2'), sum=1200
- - result: {
-  - {7, 27, 87, 163, 170, 205, 541}, 
-  - {7, 87, 163, 170, 773}, 
-  - {7, 87, 170, 190, 205, 541}, 
-  - {27, 163, 371, 639}, 
-  - {87, 205, 226, 682}, 
-  - {190, 371, 639}, 
-  - {446, 754}
-}, solutions: 7
-```
-
-```
-find_all_sums('numb_2'), sum=999
- - result: {
-  - {7, 27, 163, 205, 226, 371}, 
-  - {7, 163, 190, 639}, 
-  - {7, 190, 205, 226, 371}, 
-  - {27, 163, 170, 639}, 
-  - {27, 170, 205, 226, 371}, 
-  - {27, 205, 226, 541}, 
-  - {27, 972}, 
-  - {87, 371, 541}, 
-  - {170, 190, 639}, 
-  - {226, 773}
-}, solutions: 10
-```
-
-
-#### 4.8a *find_all_sums()* - XL Solution Space 2^30
-
-Extend array `numb_2` by more numbers: +`651`, +`370`
-one after another. Consider execution time.
-
-Special algorithms such as
-[branch & bound](https://en.wikipedia.org/wiki/Branch_and_bound)
-can be used to find solutions by "cutting branches" of combinations
-that cannot yield a solution, e.g. when sum is exceeded.
-
-Expand numbers to 24 numbers, as shown:
+Header file [src/graphs/graph.h](src/graphs/graph.h) defines a
+class `Graph` to store a graph:
 
 ```c++
-/*
- * Larger set of 24 numbers, no negatives, no duplicates.
- */
-const vector<int> &numb_2 = {   // 24 numbers
-    371,  682,  446,  754,  205,  972,  600,  163,  541,  672,
-     27,  170,  226,    7,  190,  639,   87,  773,  651,  370,
-    125,  774,  903,  636//, 225,  463,  286,  569,  384,    9,
-}; // add more numbers to find more  solutions
-```
+class Graph {
+    // graph as map of nodes with edges starting at each node
+    map<char, map<char, int>>& edges;
 
-Repeat invocation from 4.1.
-With the two added numbers, 13 solutions are found (10 before).
+  public:
+    Graph() : edges(*new map<char, map<char, int>>()) { };
+    ~Graph() { delete &edges; };
 
-```
-find_all_sums('numb_2'), sum=999
- - result: {
-  - {7, 27, 163, 205, 226, 371}, 
-  - {7, 163, 190, 639}, 
-  - {7, 190, 205, 226, 371}, 
-  - {27, 87, 125, 163, 226, 371}, 
-  - {27, 163, 170, 639}, 
-  - {27, 170, 205, 226, 371}, 
-  - {27, 205, 226, 541}, 
-  - {27, 972}, 
-  - {87, 125, 190, 226, 371}, 
-  - {87, 371, 541}, 
-  - {125, 163, 170, 541}, 
-  - {170, 190, 639}, 
-  - {226, 773}
-}, solutions: 13
-```
-
-Array `numb_2` started with 24 numbers yielding *2^24* combinations.
-The solution space expands rapidely doubling with each number added.
-After adding +`225` and +`463`, it is *2^26*.
-
-With all numbers, 44 solutions are found:
-
-```c++
-/*
- * Larger set of 30 numbers, no negatives, no duplicates.
- */
-const vector<int> &numb_2 = {   // 24 numbers
-    371,  682,  446,  754,  205,  972,  600,  163,  541,  672,
-     27,  170,  226,    7,  190,  639,   87,  773,  651,  370,
-    125,  774,  903,  636 , 225,  463,  286,  569,  384,    9,
+    Graph& edge(char n1, char n2, int weight, bool add_mirror=true);
+    friend ostream& operator<<(std::ostream& out, const Graph& g);
 };
 ```
 
+(7.) Which data structure is used to store a graph?
+
+(8.) Sketch a drawing of how a graph is stored in class `Graph`:
+
 ```
-find_all_sums('numb_2'), sum=999
- - result: {
-  - {7, 9, 27, 87, 125, 170, 190, 384}, - {9, 27, 190, 773}, 
-  - {7, 9, 27, 125, 163, 205, 463},     - {9, 87, 903}, 
-  - {7, 9, 27, 170, 190, 225, 371},     - {9, 125, 163, 190, 226, 286}, 
-  - {7, 9, 27, 170, 190, 226, 370},     - {9, 125, 226, 639}, 
-  - {7, 9, 27, 190, 225, 541},          - {9, 163, 170, 286, 371}, 
-  - {7, 9, 87, 226, 286, 384},          - {9, 163, 286, 541}, 
-  - {7, 9, 125, 170, 225, 463},         - {9, 190, 205, 225, 370}, 
-  - {7, 9, 125, 190, 205, 463},         - {27, 87, 125, 163, 226, 371},
-  - {7, 27, 87, 190, 225, 463},         - {27, 125, 190, 286, 371},
-  - {7, 27, 125, 170, 286, 384},        - {27, 125, 384, 463}, 
-  - {7, 27, 163, 205, 226, 371},        - {27, 163, 170, 639}, 
-  - {7, 27, 170, 226, 569},             - {27, 170, 205, 226, 371},
-  - {7, 87, 125, 170, 226, 384},        - {27, 205, 226, 541}, 
-  - {7, 163, 190, 639},                 - {27, 972}, 
-  - {7, 170, 225, 226, 371},            - {87, 125, 190, 226, 371}, 
-  - {7, 190, 205, 226, 371},            - {87, 163, 286, 463}, 
-  - {7, 225, 226, 541},                 - {87, 371, 541}, 
-  - {9, 27, 87, 205, 225, 446},         - {125, 163, 170, 541}, 
-  - {9, 27, 87, 225, 651},              - {170, 190, 639}, 
-  - {9, 27, 125, 170, 205, 463},        - {205, 225, 569},
-  - {9, 27, 163, 190, 226, 384},        - {225, 774}, 
-  - {9, 27, 163, 205, 225, 370},        - {226, 773}
-}, solutions: 44
+('A')--<27>--('B')--<12>--('C')
+               |           /
+              <7>        <4>
+               |         /
+             ('D')------+
 ```
 
-The solution space is now *2^30*.
-
-
-#### 4.8b *find_all_sums()* - XXL Solution Space 2^63
-
-Array `numb_3` with 63 numbers has a solution space of *2^63*, which
-cannot be explored *brute force*.
+A graph is built using the `edge()` - method of class `Graph`:
 
 ```c++
-/*
- * Even larger set of 63 numbers, no negatives, no duplicates.
- */
-const vector<int> numb_3 = {   // n=3, 63 numbers
-    799, 2377,  936, 3498, 1342,  493, 1635, 4676,  1613, 3851,
-    1445, 4506, 3346,    7, 2141, 2064, 1491,  908,   78, 3325,
-    1756, 3691,   23, 1995, 1800,   15, 2784, 4305,   36, 2532,
-    4292, 4802, 2522, 4183, 3261, 2610,  803, 2656,  498, 1668,
-    2038, 2194,  440,  463, 4047, 4235, 3931,  756,  521, 4042,
-    3302,  485, 1002,  408, 4691, 3387, 3104, 3658, 2241, 4382,
-    1220, 3656,  500,
-};
+Graph g;
+g.edge('A', 'B', 2).edge('A', 'D', 8)
+ .edge('B', 'D', 5).edge('B', 'E', 6)
+ .edge('C', 'E', 9).edge('C', 'F', 3)
+ .edge('D', 'E', 3).edge('D', 'F', 2)
+ .edge('E', 'F', 1);
 ```
 
-Although only 10 solutions are found from `numb_3` of numbers
-yielding sum=999, the space to explore is huge *2^63*.
+(9.) Draw the resulting graph.
 
-```
-find_all_sums('numb_3'), sum=999
- - result: {
-  - {7, 23, 36, 440, 493}, 
-  - {7, 36, 463, 493}, 
-  - {15, 23, 36, 440, 485}, 
-  - {15, 23, 440, 521}, 
-  - {15, 23, 463, 498}, 
-  - {15, 36, 463, 485}, 
-  - {15, 78, 408, 498}, 
-  - {15, 463, 521}, 
-  - {23, 36, 440, 500}, 
-  - {36, 463, 500}
-}, solutions: 10
-```
+(10.) How is it possible that invocations of method `edge()` can concatenated
+    (*"chained"*)?
 
-Searching for `sum=996`, `sum=500`, `sum=100` and `sum=2000` (30sec).
+(11.) What is [Method chaining](https://en.wikipedia.org/wiki/Method_chaining)?
+    Which property must *"chainable"* methods have?
 
-```
-find_all_sums(996): {{7, 15, 36, 440, 498}, {15, 78, 440, 463}}, solutions: 2
-find_all_sums(500): {{7, 493}, {15, 485}, {500}}, solutions: 3
-find_all_sums(100): {{7, 15, 78}}, solutions: 1
-find_all_sums(2000): { ... }, solutions: 38
-```
+(12.) How can a *"Path"* between two nodes be represented as data structure?
 
-Searching for larger sum-values increases solution time since fewer
-branches can be cut.
+
+&nbsp;
+
+## 3. Shortest-Path Algorithm
+
+<!--
+[video (FelixTechTips)](https://youtu.be/bZkzH5x0SKU?si=n8Z2ZIfbB73_v1TE)
+<img src="../markup/img/graph_2a.jpg" alt="drawing" width="640"/>
+-->
+Watch the
+[Video (Mike Pound, Computerphile channel)](https://youtu.be/GazC3A4OQTE?si=ZuBEcWaBzuKmPMqA)
+and understand how
+[Dijkstra's Shortest Path Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+(1956) works.
+
+<img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/Mike_Pound_Dijkstras_algorithm.jpg" alt="drawing" width="400"/>
+
+
+Implement the algorithm in
+
