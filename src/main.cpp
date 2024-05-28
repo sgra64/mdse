@@ -3,6 +3,9 @@
 #ifdef NUMBERS
 #include "numbers.h"
 #endif
+#ifdef GRAPHS
+#include "graph.h"
+#endif
 #ifdef DEMO
 #include "demo.h"
 #endif
@@ -19,6 +22,9 @@ call_table_t call_table[] {
 #ifdef NUMBERS
     {"nu", &Numbers::main},
     {"numbers", &Numbers::main},
+#endif
+#ifdef GRAPHS
+    {"graphs", &Graphs::main},
 #endif
 };
 

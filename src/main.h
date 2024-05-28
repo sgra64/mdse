@@ -6,6 +6,7 @@
 /*
  * Macro definitions and switches:
  */
+#define GRAPHS
 #define NUMBERS
 #define DEMO
 

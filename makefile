@@ -1,7 +1,8 @@
 # source directories with header files
 INCLUDES = \
 	-Isrc/demo \
-	-Isrc/numbers
+	-Isrc/numbers \
+	-Isrc/graphs
 
 # all compiled files
 OBJS = \
@@ -9,7 +10,11 @@ OBJS = \
 	out/demo/demo.o \
 	out/numbers/numbers.o \
 	out/numbers/numbers_functions.o \
-	out/numbers/ostream_helper.o
+	out/numbers/ostream_helper.o \
+	out/graphs/main.o \
+	out/graphs/graph.o \
+	out/graphs/shortest_path.o
+
 
 # compiler options
 CC=g++
@@ -49,3 +54,6 @@ out/demo/demo.o:  src/demo/demo.h src/demo/demo.cpp
 out/numbers/numbers.o:  src/numbers/numbers.h src/numbers/numbers.cpp
 out/numbers/ostream_helper.o:  src/numbers/ostream_helper.h src/numbers/ostream_helper.cpp
 out/numbers/numbers_functions.o:  src/numbers/numbers.h src/numbers/numbers_functions.cpp $(NUMBERS_SOLUTION_DEPS)
+out/graphs/main.o:  src/graphs/graph.h src/graphs/main.cpp
+out/graphs/graph.o:  src/graphs/graph.h src/graphs/graph.cpp
+out/graphs/shortest_path.o:  src/graphs/graph.h src/graphs/shortest_path.cpp $(GRAPH_SOLUTION_DEPS)
