@@ -34,7 +34,7 @@ namespace Graphs {
           .edge('E', 'F', 1);
 
         // select graph, start and end node
-        Graph& g = g2;
+        Graph& g = g1;
         char from='S';
         char to='E';
 
@@ -42,7 +42,7 @@ namespace Graphs {
         cout << "graph g:\n" << g << endl;
 
         // compute and print shortest path
-        Path& shortest_path = Graphs::shortest_path(g, from, to);
+        Path& shortest_path = g.shortest_path(from, to);
         cout << "shortest-path('" << from << "','" << to << "'):\n - "
             << shortest_path
             << "\n - distance: "

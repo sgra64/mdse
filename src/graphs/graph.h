@@ -7,6 +7,8 @@ using namespace std;
 
 namespace Graphs {
 
+    class Path;     // forward declaration of class Path
+
     /**
      * Class to represent undirected graph of nodes and weighted edges.
      */
@@ -19,6 +21,7 @@ namespace Graphs {
         ~Graph() { delete &edges; };
 
         Graph& edge(char n1, char n2, int weight, bool add_mirror=true);
+        Path& shortest_path(char start, char end);
 
         friend ostream& operator<<(std::ostream& out, const Graph& g);
     };
@@ -40,15 +43,6 @@ namespace Graphs {
 
         friend ostream& operator<<(std::ostream& out, const Path& p);
     };
-
-    /**
-     * Compute shortest path from start to end node in an undirected,
-     * weighter graph using Dijkstra's algorithm.
-     * @param start node where path starts
-     * @param end node where shortest path ends
-     * @return shortest path between start and end node
-     */
-    Path& shortest_path(Graph& g, char start, char end);
 
     /**
      * ostream operator << to print graph.

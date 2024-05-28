@@ -12,11 +12,15 @@ namespace Graphs {
      * @param end node where shortest path ends
      * @return shortest path between start and end node
      */
-    Path& shortest_path(Graph& g, char start, char end) {
+    Path& Graph::shortest_path(char start, char end) {
         Path& path = *new Path();
-        path.add(start, 10)
-            .add('B', 4)
-            .add(end, 9);
+
+        /**
+         * @TODO: compute shortest path in graph from start to end node
+         */
+        path.add(start, 0)      // build dummy path
+            .add('X', 20)
+            .add(end, 80);
         //
         return path;
     }
