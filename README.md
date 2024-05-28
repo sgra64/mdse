@@ -279,8 +279,6 @@ Watch the
 
 <img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/Mike_Pound_Dijkstras_algorithm.jpg" alt="drawing" width="400"/>
 
-&nbsp;
-
 Seeking the shortest path between nodes `'S'` and `'E'`:
 
 <img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/graph_1.jpg" alt="drawing" width="400"/>
