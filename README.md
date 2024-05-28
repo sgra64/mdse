@@ -346,6 +346,8 @@ shortest-path('S','E'):
 
 &nbsp;
 
+Example 2:
+
 Using graph `g2` from
 [video](https://www.youtube.com/watch?v=bZkzH5x0SKU&ab_channel=FelixTechTips)
 (*"FelixTechTips: Dijkstras Shortest Path Algorithm Explained"*)
