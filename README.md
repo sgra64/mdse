@@ -216,15 +216,20 @@ Header file [src/graphs/graph.h](src/graphs/graph.h) defines a
 class `Graph` to store a graph:
 
 ```c++
+/**
+ * Class to represent undirected graph of nodes and weighted edges.
+ */
 class Graph {
     // graph as map of nodes with edges starting at each node
     map<char, map<char, int>>& edges;
 
-  public:
+    public:
     Graph() : edges(*new map<char, map<char, int>>()) { };
     ~Graph() { delete &edges; };
 
     Graph& edge(char n1, char n2, int weight, bool add_mirror=true);
+    Path& shortest_path(char start, char end);
+
     friend ostream& operator<<(std::ostream& out, const Graph& g);
 };
 ```
