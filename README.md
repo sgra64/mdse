@@ -8,8 +8,8 @@ A *[Graph](https://en.wikipedia.org/wiki/Graph_theory)*
 is a set of *nodes* (vertices) and *edges* connecting nodes G = { n ∈ N, e ∈ E }.
 A *weighted Graph* has *weights* associated with egdes.
 
-The task is to find the *"shortest path"* between a *start node* `S` and
-an *end node* `E`. The attribute *"shortest"* refers to the minimum added weight
+The task is to find the *"shortest path"* between a *start node* `'S'` and
+an *end node* `'E'`. The attribute *"shortest"* refers to the minimum added weight
 of edges. The problem has many useful applications, e.g. in navigation systems.
 
 <img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/graph_1.jpg" alt="drawing" width="800"/>
@@ -24,16 +24,8 @@ path in an undirected, weighted graph. He received the
 [Turing Award](https://en.wikipedia.org/wiki/Turing_Award)
 for this and numerous other contributions in computer science in 1972.
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Edsger_Wybe_Dijkstra.jpg" alt="drawing" width="100"/>
 
-| aaa | bbb |
-| aaa | bbb |
-| aaa | bbb |
-
-<table>
-<td>
-<img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Edsger_Wybe_Dijkstra.jpg" alt="drawing" width="400"/>
-</td>
-<td>
 *Edsger W. Dijkstra* (1930-2003,
 [bio](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra))
 was a Dutch computer scientist, software engineer, professor of Computer Science
@@ -43,15 +35,13 @@ to find a shortest
 path in an undirected, weighted graph. He received the
 [Turing Award](https://en.wikipedia.org/wiki/Turing_Award)
 for this and numerous other contributions in computer science in 1972.
-</td>
-</table>
 
-
-The algorithm was used in a Bachelor thesis by
+The algorithm was used in a Bachelor thesis,
 [Steffen Ansorge](https://www.linkedin.com/in/steffenansorge):
 *"Planning and development of a system for route planning with unreliable position
 data of intermediate stops"*,
-[.pdf](https://drive.google.com/file/d/1vceT1_HE0IxMuiheIbkkzwUEKi106gMX).
+[.pdf](https://drive.google.com/file/d/1vceT1_HE0IxMuiheIbkkzwUEKi106gMX)
+at TIER to optimize scooter pickup routes for recharging.
 
 
 &nbsp;
@@ -283,12 +273,97 @@ g.edge('A', 'B', 2).edge('A', 'D', 8)
 -->
 Watch the
 [Video (Mike Pound, Computerphile channel)](https://youtu.be/GazC3A4OQTE?si=ZuBEcWaBzuKmPMqA)
-and understand how
+(10:42 min) and understand how
 [Dijkstra's Shortest Path Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 (1956) works.
 
 <img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/Mike_Pound_Dijkstras_algorithm.jpg" alt="drawing" width="400"/>
 
+&nbsp;
 
-Implement the algorithm in
+Seeking the shortest path between nodes `'S'` and `'E'`:
 
+<img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/graph_1.jpg" alt="drawing" width="400"/>
+
+Understand the algorithm.
+
+Identify information it needs.
+
+Implement the algorithm in function *shortest_path()* in `src/graphs/shortest_path.cpp`:
+
+```c++
+/**
+ * Compute shortest path from start to end node in an undirected,
+ * weighter graph using Dijkstra's algorithm.
+ * @param start node where path starts
+ * @param end node where shortest path ends
+ * @return shortest path between start and end node
+ */
+Path& Graph::shortest_path(char start, char end) {
+    Path& path = *new Path();
+
+    /**
+     * @TODO: compute shortest path in graph from start to end node
+     */
+    path.add(start, 0)      // build dummy path
+        .add('X', 20)
+        .add(end, 80);
+    //
+    return path;
+}
+```
+
+The program first renders the graph `g1` from the video:
+
+```
+graph g1:
+'A' --> ('B':3), ('D':4), ('S':7)
+'B' --> ('A':3), ('D':4), ('H':1), ('S':2)
+'C' --> ('L':2), ('S':3)
+'D' --> ('A':4), ('B':4), ('F':5)
+'E' --> ('G':2), ('K':5)                <-- end node 'E'
+'F' --> ('D':5), ('H':3)
+'G' --> ('E':2), ('H':2)
+'H' --> ('B':1), ('F':3), ('G':2)
+'I' --> ('J':6), ('K':4), ('L':4)
+'J' --> ('I':6), ('K':4), ('L':4)
+'K' --> ('E':5), ('I':4), ('J':4)
+'L' --> ('C':2), ('I':4), ('J':4)
+'S' --> ('A':7), ('B':2), ('C':3)       <-- start node 'S'
+```
+
+Then, it outputs the dummy path:
+
+```
+shortest-path('S','E'):
+ - ('S':0) --> ('X':20) --> ('E':100)
+ - distance: 100
+```
+
+
+&nbsp;
+
+Using graph `g2` from
+[video](https://www.youtube.com/watch?v=bZkzH5x0SKU&ab_channel=FelixTechTips)
+(*"FelixTechTips: Dijkstras Shortest Path Algorithm Explained"*)
+seeking the shortest path between nodes `'A'` and `'C'`:
+
+<img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/graph_g2a.jpg" alt="drawing" width="400"/>
+
+yields the following output showing the correct shortest path:
+
+```
+graph g2:
+'A' --> ('B':2), ('D':8)
+'B' --> ('A':2), ('D':5), ('E':6)
+'C' --> ('E':9), ('F':3)
+'D' --> ('A':8), ('B':5), ('E':3), ('F':2)
+'E' --> ('B':6), ('C':9), ('D':3), ('F':1)
+'F' --> ('C':3), ('D':2), ('E':1)
+
+shortest-path('A','C'):
+ - ('A':0) --> ('B':2) --> ('D':7) --> ('F':9) --> ('C':12)
+ - distance: 12
+```
+
+<img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/graph_g2b.jpg" alt="drawing" width="400"/>
