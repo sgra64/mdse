@@ -104,31 +104,65 @@ the current state of the project.
 ```sh
 [ -d .git ] || git init         # initialize git, if project is not yet under git control
 
+# commit all source files
+git status                      # show status of project directory (working tree)
+
+git add .* README.md makefile* src      # phase 1: stage untracked/changed files for commit
+git commit -m "pre-merge commit"        # phase 2: commit (record) staged files in local git repository
+git status                              # working tree is now clean (no pending changes)
+
 # add link of remote repository under name 'mdse-repo'
 git remote add mdse-repo https://github.com/sgra64/mdse.git
 
-# fetch branch G1-graphs from the remote repository
+# fetch branch G1-graphs from the remote repository (local-branch:remote-branch)
 git fetch mdse-repo G1-graphs:G1-graphs
 
-# merge content of fetched branch into current branch (branch: main)
+# merge content of fetched branch into current branch (main)
 git merge --allow-unrelated-histories --strategy-option theirs G1-graphs
 ```
 
-Inspecting content of files,
+Output:
+
+```
+Auto-merging .vscode/cc_objs
+Auto-merging .vscode/cc_opts
+Auto-merging README.md
+Auto-merging makefile
+Auto-merging src/main.cpp
+Auto-merging src/main.h
+Merge made by the 'ort' strategy.
+ .vscode/cc_objs              |   2 +
+ .vscode/cc_opts              |   2 +-
+ README.md                    | 753 ++++++++++++++-----------------------------
+ makefile                     |  12 +-
+ src/graphs/graph.cpp         |  94 ++++++
+ src/graphs/graph.h           |  72 +++++
+ src/graphs/main.cpp          |  53 +++
+ src/graphs/shortest_path.cpp |  30 ++
+ src/main.cpp                 |   6 +
+ src/main.h                   |   1 +
+ 10 files changed, 507 insertions(+), 518 deletions(-)
+ create mode 100644 src/graphs/graph.cpp
+ create mode 100644 src/graphs/graph.h
+ create mode 100644 src/graphs/main.cpp
+ create mode 100644 src/graphs/shortest_path.cpp
+```
+
+Inspecting changes from merge in project directory:
 
 ```sh
-find src                    # show source files in dev-container after merge
+find src makefile*          # show source files in dev-container after merge
 ```
 
 new files under `src/graphs` appear:
 
 ```
 src
-src/graphs
-src/graphs/shortest_path.cpp
-src/graphs/main.cpp
-src/graphs/graph.cpp
-src/graphs/graph.h
+src/graphs                          <-- new src directory and files
+src/graphs/shortest_path.cpp          |
+src/graphs/main.cpp                   |
+src/graphs/graph.cpp                  |
+src/graphs/graph.h                    |
 src/numbers
 src/numbers/ostream_helper.h
 src/numbers/numbers.h
@@ -138,41 +172,230 @@ src/numbers/ostream_helper.cpp
 src/demo
 src/demo/demo.h
 src/demo/demo.cpp
-src/main.h
-src/main.cpp
+src/main.h                          <-- changed, now includes #define GRAPHS
+src/main.cpp                        <-- changed
+makefile                            <-- changed
+makefile_addons.mk
 ```
 
 `makefile` was modified in the merge to include new dependencies for `graphs`-files.
 Compare differences that were made in `makefile`:
 
 ```sh
-git diff HEAD~1 HEAD makefile
-```
-```
+git diff HEAD~1 HEAD makefile   # compare makefile in commits before and after the merge
 ```
 
-Show which files were modified in the merge (M: modified, A: added, D: deleted):
+Output are the changes made by the merge:
+
+```
+diff --git a/makefile b/makefile
+index b8e228a..89e5131 100644
+--- a/makefile
++++ b/makefile
+@@ -1,7 +1,8 @@
+ # source directories with header files
+ INCLUDES = \
+        -Isrc/demo \
+-       -Isrc/numbers               <-- previous line (no ' \')
++       -Isrc/numbers \             <-- new line (with ' \' added)
++       -Isrc/graphs                <-- added line
+
+ # all compiled files
+ OBJS = \
+@@ -9,7 +10,11 @@ OBJS = \
+        out/demo/demo.o \
+        out/numbers/numbers.o \
+        out/numbers/numbers_functions.o \
+-       out/numbers/ostream_helper.o        <-- previous line (no ' \')
++       out/numbers/ostream_helper.o \      <-- new line (with ' \' added)
++       out/graphs/main.o \                 <-- added line
++       out/graphs/graph.o \                <-- added line
++       out/graphs/shortest_path.o          <-- added line
+...
+                                            <-- new dependencies inserted
++out/graphs/main.o:  src/graphs/graph.h src/graphs/main.cpp
++out/graphs/graph.o:  src/graphs/graph.h src/graphs/graph.cpp
++out/graphs/shortest_path.o:  src/graphs/graph.h src/graphs/shortest_path.cpp $(
+GRAPH_SOLUTION_DEPS)
+```
+
+The merge created a new (post-merge) commit in the local git repository:
+
+```sh
+git diff HEAD~1 --name-status   # show differences made by the merge
+git log --oneline
+```
+
+Out put shows the pre-merge and post-merge commits:
+
+```
+558b1f5 (HEAD -> main) Merge branch 'G1-graphs'
+8629e2a pre-merge commit
+...
+```
+
+The two commits can be compared to see the differences between the pre-
+and post-merge commits.
 
 ```sh
 git diff HEAD~1 --name-status   # show differences made by the merge
 ```
+
+The output gives an overview of which files were added (A), modified (M)
+or deleted (D, none here) by the merge:
+
 ```
+M       .vscode/cc_objs                 <-- M: modified file
+M       .vscode/cc_opts
+M       README.md
+M       makefile
+A       src/graphs/graph.cpp            <-- A: new file
+A       src/graphs/graph.h              <-- A: new file
+A       src/graphs/main.cpp             <-- A: new file
+A       src/graphs/shortest_path.cpp    <-- A: new file
+M       src/main.cpp
+M       src/main.h
 ```
 
 The merge can be reset and the previous state of the project restore:
 
 ```sh
-git reset --hard            # reset project to pre-merge state
+git reset --hard HEAD~1     # reset project to pre-merge state (pre-merge commit)
+git log --oneline
+```
 
+The commit containing the merge (558b1f5) is gone and HEAD points
+to the pre-merge commit:
+
+```
+8629e2a (HEAD -> main) pre-merge commit
+...
+```
+
+The project directory has the pre-merge state (all changes made by the
+merge are gone).
+
+```sh
 find src                    # files under: src/graphs are gone
 ```
+
+Files from the merge in `src/graphs` are gone:
+
 ```
+src
+src/demo
+src/demo/demo.cpp
+src/demo/demo.h
+src/main.cpp
+src/main.h
+src/numbers
+src/numbers/numbers.cpp
+src/numbers/numbers.h
+src/numbers/numbers_functions.cpp
+src/numbers/ostream_helper.cpp
+src/numbers/ostream_helper.h
 ```
 
-Of course, the merge can be repeated
+Of course, the merge can be repeated:
 
 ```sh
 git merge --allow-unrelated-histories --strategy-option theirs G1-graphs
+git log --oneline
+```
+
+The post-merge commit has been re-created (with new commit-id: c706d79):
+
+```
+c706d79 (HEAD -> main) Merge branch 'G1-graphs'
+8629e2a pre-merge commit
+```
+
+The project can now be built:
+
+```sh
+make clean main.out         # build the project (main.out)
+```
+
+New files are included in the build:
+
+```
+removing main.out executable and compiled out directory
+rm -rf main.out out
+create out/
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/main.cpp -o out/main.o
+create out/demo/
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/demo/demo.cpp -o out/demo/demo.o
+create out/numbers/
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/numbers/numbers.cpp -o out/numbers/numbers.o
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/numbers/numbers_functions.cpp -o out/numbers/numbers_functions.o
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/numbers/ostream_helper.cpp -o out/numbers/ostream_helper.o
+create out/graphs/
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/graphs/main.cpp -o out/graphs/main.o
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/graphs/graph.cpp -o out/graphs/graph.o
+g++ -Isrc/demo -Isrc/numbers -Isrc/graphs -g -c -Wall -std=c++20 -c src/graphs/shortest_path.cpp -o out/graphs/shortest_path.o
+g++ -o main.out out/main.o out/demo/demo.o out/numbers/numbers.o out/numbers/numbers_functions.o out/numbers/ostream_helper.o out/graphs/main.o out/graphs/graph.o out/graphs/shortest_path.o
+```
+
+Run the program:
+
+```sh
+./main.out graphs g2        # run the program using graph 'g2'
+```
+
+New output from `src/graphs/main.cpp` shows:
+
+```
+Graphs::main() in graphs/main.cpp:
+graph g:
+'A' --> ('B':2), ('D':8)
+'B' --> ('A':2), ('D':5), ('E':6)
+'C' --> ('E':9), ('F':3)
+'D' --> ('A':8), ('B':5), ('E':3), ('F':2)
+'E' --> ('B':6), ('C':9), ('D':3), ('F':1)
+'F' --> ('C':3), ('D':2), ('E':1)
+
+shortest-path('S','E'):
+ - ('S':0) --> ('X':20) --> ('E':80)
+ - distance: 100
+```
+
+The source code producing this output in `src/graphs/main.cpp`:
+
+```c++
+/**
+ * main() function in Graphs:: namespace that prints command line arguments.
+ *
+ * @param argc number of command line arguments.
+ * @param argv vector with command line arguments.
+ * @return 0 for successfull execution or other exit code for failure.
+ */
+int main(int argc, char *argv[]) {
+    cout << "Graphs::main() in graphs/main.cpp:" << endl;
+
+    Graph g2;
+    g2.edge('A', 'B', 2).edge('A', 'D', 8)
+        .edge('B', 'D', 5).edge('B', 'E', 6)
+        .edge('C', 'E', 9).edge('C', 'F', 3)
+        .edge('D', 'E', 3).edge('D', 'F', 2)
+        .edge('E', 'F', 1);
+
+    // select graph, start and end node
+    Graph& g = select(argc, argv, g1, g2);
+    char from='S';
+    char to='E';
+
+    // print selected graph
+    cout << "graph g:\n" << g << endl;
+
+    // compute and print shortest path
+    Path& shortest_path = g.shortest_path(from, to);
+    cout << "shortest-path('" << from << "','" << to << "'):\n - "
+        << shortest_path
+        << "\n - distance: "
+        << shortest_path.distance() << "" << endl;
+
+    return EXIT_SUCCESS;
+}
 ```
 
 
