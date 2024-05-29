@@ -2,8 +2,12 @@
 
 namespace Graphs {
 
+    Graph& select(int argc, char *argv[], Graph& g1, Graph& g2) {
+        return argc > 1 && argv[1]==string("g2")? g2 : g1;
+    }
+
     /**
-     * main() function in Demo:: namespace that prints command line arguments.
+     * main() function in Graphs:: namespace that prints command line arguments.
      *
      * @param argc number of command line arguments.
      * @param argv vector with command line arguments.
@@ -34,7 +38,7 @@ namespace Graphs {
           .edge('E', 'F', 1);
 
         // select graph, start and end node
-        Graph& g = g1;
+        Graph& g = select(argc, argv, g1, g2);
         char from='S';
         char to='E';
 
