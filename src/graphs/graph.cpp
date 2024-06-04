@@ -26,11 +26,12 @@ namespace Graphs {
     /**
      * Add node with edge weight to path.
      * @param n node added to path
-     * @param weight weight associated with node edge
+     * @param distance distance (or weight) associated with edge
      * @return chainable self-reference
      */
-    Path& Path::add(char n, int weight) {
-        auto p = *new pair<char, int>(n, weight);
+    Path& Path::add(char n, int distance) {
+        this->dist = distance;
+        auto p = *new pair<char, int>(n, distance);
         path.push_back(p);
         return *this;
     }
@@ -41,18 +42,6 @@ namespace Graphs {
      */
     int Path::length() {
         return path.size();
-    }
-
-    /**
-     * Return sum of weights of all path edges.
-     * @return sum of weights (distance)
-     */
-    int Path::distance() {
-        int dist=0;
-        for(auto const& e : path) {
-            dist += e.second;   // sum edge weight
-        }
-        return dist;
     }
 
     /**

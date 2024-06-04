@@ -13,7 +13,8 @@ namespace Graphs {
      * Class to represent undirected graph of nodes and weighted edges.
      */
     class Graph {
-        // graph as map of nodes with edges starting at each node
+        // private attribute to store graph as map of nodes with edges
+        // starting at each node
         map<char, map<char, int>>& edges;
 
       public:
@@ -30,16 +31,19 @@ namespace Graphs {
      * Class to represent path of nodes and weighted edges.
      */
     class Path {
-        // path as vector of edges with weights
+        // private attribute: path as vector of edges with weights
         vector<pair<char, int>>& path;
 
+        // private attribute: distance of path
+        int dist;
+
       public:
-        Path() : path(*new vector<pair<char, int>>) { };
+        Path() : path(*new vector<pair<char, int>>), dist(0) { };
         ~Path() { delete &path; };
 
-        Path& add(char n, int weight);
+        Path& add(char n, int distance);
         int length();
-        int distance();
+        int distance() { return dist; };
 
         friend ostream& operator<<(std::ostream& out, const Path& p);
     };
