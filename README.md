@@ -380,9 +380,9 @@ int main(int argc, char *argv[]) {
         .edge('E', 'F', 1);
 
     // select graph, start and end node
-    Graph& g = select(argc, argv, g1, g2);
-    char from='S';
-    char to='E';
+    Graph& g = g2;
+    char from='A';
+    char to='C';
 
     // print selected graph
     cout << "graph g:\n" << g << endl;
@@ -539,7 +539,13 @@ Path& Graph::shortest_path(char start, char end) {
 }
 ```
 
-The program first renders the graph `g1` from the video:
+The program renders graph `g1` from the video with:
+
+```sh
+./main.out graphs graph=g1 start=S end=E
+```
+
+Output:
 
 ```
 graph g1:
@@ -558,13 +564,42 @@ graph g1:
 'S' --> ('A':7), ('B':2), ('C':3)       <-- start node 'S'
 ```
 
-Then, it outputs the dummy path:
+Before the solution is implemented, the program outputs the dummy path:
 
 ```
 shortest-path('S','E'):
  - ('S':0) --> ('X':20) --> ('E':100)
  - distance: 100
 ```
+
+With the correct implementation of the `shortest-path` algorithm, the
+program outputs the shortest path between nodes `'S'` (start) and
+`'E'` (end):
+
+```
+shortest-path('S','E'):
+ - ('S':0) --> ('B':2) --> ('H':3) --> ('G':5) --> ('E':7)
+ - distance: 7
+```
+
+Experiment with other paths, e.g. from `'S'` to `'K'` or `'S'` to `'I'`:
+
+```sh
+./main.out graphs graph=g1 start=S end=K
+./main.out graphs graph=g1 start=S end=I
+```
+```
+shortest-path('S','K'):
+ - ('S':0) --> ('B':2) --> ('H':3) --> ('G':5) --> ('E':7) --> ('K':12)
+ - distance: 12
+ 
+ shortest-path('S','I'):
+ - ('S':0) --> ('C':3) --> ('L':5) --> ('I':9)
+ - distance: 9
+```
+
+The route via node `'B'` is taken from `'S'` to `'K'` while the upper route
+via node `'C'` is taken from `'S'` to `'I'`.
 
 
 &nbsp;
@@ -579,6 +614,11 @@ seeking the shortest path between nodes `'A'` and `'C'`:
 <img src="https://raw.githubusercontent.com/sgra64/mdse/markup/g1-graphs/graph_g2a.jpg" alt="drawing" width="400"/>
 
 yields the following output showing the correct shortest path:
+
+```sh
+./main.out      # uses defaults: graph=g2 start=A end=C
+./main.out graphs graph=g2 start=A end=C
+```
 
 ```
 graph g2:
