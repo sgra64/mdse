@@ -1,0 +1,42 @@
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// VSCode main project settings file.
+// 
+// Setting up Java in VSCode:
+//  - https://code.visualstudio.com/docs/languages/java
+//  - https://code.visualstudio.com/docs/java/java-tutorial
+// 
+// VSCode Extensions used for Java development:
+//  - Extension Pack for Java (Microsoft)
+//    https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
+// 
+//  - Code Runner for Java (Jun Han)
+//    https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner
+// 
+// VSCode global settings file and project caches:
+//  - Windows: C:/Users/<user>/AppData/Roaming/Code/User/
+//  - MacOS:   ~/Library/Application\ Support/Code/User/
+//     +
+//     +-- settings.json            ; VSCode global settings file
+//     +-- workspaceStorage         ; VSCode project caches
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+{
+    // Terminal configuration, https://code.visualstudio.com/docs/terminal/profiles
+    "terminal.integrated.profiles.windows": {
+        "Bash": {
+          "path": ["bash"],             // 'bash' terminal
+          "args": ["--init-file", "'${workspaceFolder}'/.vscode/launch-terminal.sh"],
+          "icon": "terminal-bash",
+        },
+        "Cmd": {
+            "path": ["cmd"],            // 'cmd.exe' terminal
+        },
+        "PowerShell": {
+            "path": "powershell",       // 'powershell.exe' terminal
+            "args": ["-noexit"],        // ["-noexit", "-file", "${env:APPDATA}\\PowerShell\\custom-init.ps1"],
+        },
+        "Git Bash": null,               // disable terminals from menu
+        "Command Prompt": null,
+        "JavaScript Debug Terminal": null,
+    },
+    "terminal.integrated.defaultProfile.windows": "Bash",
+}
