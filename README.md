@@ -5,7 +5,7 @@
 # Assignment B1: C-Data
 
 
-Assignment B1 demonstrates the use of data structures by the example of a
+The assignment demonstrates the use of data structures by the example of a
 list type that stores consecutively addressable elements. The type dynamically
 expands as elements are added.
 
@@ -16,15 +16,16 @@ expands as elements are added.
  * List elements are of a simple type (int) or are sub-lists.
  * 
  * Examples:
- *  - [1, 2, 3] (simple list) or [[4, 5], [6]] nested list with sub-lists.
+ *  - simple list: [1, 2, 3]
+ *  - nested list of lists: [[4, 5], [6]]
  */
 struct list {
     int cap;            // capacity
     int len;            // current length
-    int is_simple;      // is simple list, e.g. [1, 2, 3] usind idata[]
+    int is_simple;      // is simple list, e.g. [1, 2, 3] using idata[]
     union {
         int (*idata)[];             // pointer to array of int
-        struct list *(*ldata)[];    // pointer to struct list *
+        struct list *(*ldata)[];    // pointer to array of (struct list *)
     } data;
 };
 ```
@@ -34,7 +35,7 @@ Methods of the type are:
 ```c
 
 /**
- * Create simple, emtpy list.
+ * Create empty simple list.
  */
 extern struct list *list_create();
 
@@ -49,7 +50,7 @@ extern struct list *list_from_values(int argn, int values[]);
 extern struct list *list_with_sublists();
 
 /**
- * Create new list as copy of list.
+ * Create copy of list.
  */
 extern struct list *list_copy(struct list *list);
 
@@ -79,6 +80,8 @@ Steps
 1. [Create Source Code](#2-create-source-code)
 
 1. [Build and Run](#3-build-and-run)
+
+1. [Challenges](#4-challenges)
 
 
 
@@ -289,3 +292,34 @@ Show the commit log:
 ```sh
 git log --oneline                   # show commit log/history
 ```
+
+
+
+&nbsp;
+## 4. Challenges
+
+Implement the following functions:
+
+```c
+/**
+ * Return same list with elements reversed (in-place).
+ Example: [1, 2, 3] -> [3, 2, 1]
+ */
+struct list *list_reverse(struct list *list);
+
+/**
+ * Return same list with elements sorted (in-place).
+ * Example: [8, 4, 7, 2, 2] -> [2, 2, 4, 7, 8]
+ */
+struct list *list_sort(struct list *list);
+
+/**
+ * Return new list with the powerset of the input list.
+ * Example: [1, 2, 3] ->
+ * [[], [1], [2], [3], [1, 2], [2, 3], [1, 3], [1, 2, 3], ]
+ */
+struct list *list_pset(struct list *list);
+```
+
+and demonstrate examples.
+
