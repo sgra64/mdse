@@ -1,0 +1,25 @@
+#------------------------------------------------------------------------------
+# .gitignore contains patterns of files and directories to be ignored by git.
+# # 
+# see: https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+# example: https://github.com/github/gitignore/blob/master/Java.gitignore
+#------------------------------------------------------------------------------
+
+# allow README.md to be deleted in local project
+README.md
+
+# Compiled Object files
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dll
+
+# Compiled Static libraries
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
