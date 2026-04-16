@@ -133,6 +133,8 @@ Installieren Sie bitte `VSCode` und starten Sie die IDE.
 
 Installieren Sie in `VSCode` bitte die Extensions für `Docker` und `Dev Containers`.
 
+[*Setup Dev Container*](https://www.mandraketech.in/blog/vscode-devcontainer-setup-for-cpp-programmers/)
+
 <img src="https://code.visualstudio.com/assets/docs/devcontainers/create-dev-container/connected-to-dev-container.png" alt="drawing" width="600"/>
 
 
