@@ -9,6 +9,7 @@
 .vscode
 .devcontainer
 .bashrc
+.gitmodules
 
 # ignore README.md to be deleted in local project
 README.md
@@ -32,3 +33,13 @@ out
 
 # ignore tmp folders
 tmp
+
+# ignore archives and encoding files
+*.7z
+*.gz
+*.rar
+*.tar
+*.tgz
+*.tar.gz
+*.zip
+*.uue*
