@@ -1,0 +1,38 @@
+#------------------------------------------------------------------------------
+# patterns of files and folders to be ignored by git
+# # 
+# see: https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+# example: https://github.com/github/gitignore/blob/master/Java.gitignore
+#------------------------------------------------------------------------------
+
+# ignore source folder and 'Makefile' on 'git-modules' branch
+src
+Makefile
+
+# ignore gitmodules folders
+.vscode
+.devcontainer
+.bashrc
+
+# ignore README.md
+README.md
+
+# ignore compiled files and folders with compiled content
+*.o
+*.obj
+out
+
+# ignore dynamic libraries
+*.so
+*.dll
+
+# ignore static libraries
+*.a
+*.lib
+
+# ignore executables
+*.exe
+*.out
+
+# ignore tmp folders
+tmp
