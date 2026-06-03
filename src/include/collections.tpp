@@ -3,14 +3,16 @@
 namespace collections {
 
 /**
- * Definition of custom type list<T> derived from the standard type
- * std::list<T>. A list has properties:
+ * Inline implementations of custom type list<T> that is derived from
+ * the standard type std::list<T>. A list has properties:
  * - a list is ordered (0, 1, 2, 3rd element), access i-th element
  * - may contain duplicates (same values multiple times)
  * 
  * Operations:
  * - add(T &value)          - add value to list
  * - &list<T> << T &value   - operator to add value to list
+ * - T& at(i)               - return i'th element from list
+ * - T& [i]                 - operator that returns the i'th element
  * - insertAt(i, T &value)  - insert value after i-th position
  * - removeAt(i)            - remove i-th value (from begin)
  * - removeFromEnd(i)       - remove i-th value (from end)
@@ -19,6 +21,7 @@ namespace collections {
  * - print()                - print list
  * - ostream& << &list<T>   - operator to output list to ostream&
  */
+
 template <typename T>
 list<T>::list(const list<T>& other) : std::list<T>(other) {}
 
@@ -33,11 +36,20 @@ list<T>& list<T>::operator<<(const T &value) {
     return *this;
 }
 
-// template <typename T>
-// list<T>& list<T>::operator>>(const T &value) {
-//     this->push_front(value);
-//     return *this;
-// }
+template <typename T>
+T& list<T>::at(const int i) {
+    if (i < 0 || static_cast<size_t>(i) >= this->size()) {
+        throw std::out_of_range("Index out of range");
+    }
+    auto it = this->begin();
+    std::advance(it, i);
+    return *it;
+}
+
+template <typename T>
+T& list<T>::operator[](const int i) {
+    return at(i);
+}
 
 template <typename T>
 void list<T>::insertAt(const size_t index, const T &value) {
@@ -50,7 +62,7 @@ void list<T>::insertAt(const size_t index, const T &value) {
 }
 
 template <typename T>
-T list<T>::removeAt(const size_t index) {
+T& list<T>::removeAt(const size_t index) {
     if (index >= this->size()) {
         throw std::out_of_range("Index out of range");
     }
@@ -62,7 +74,7 @@ T list<T>::removeAt(const size_t index) {
 }
 
 template <typename T>
-T list<T>::removeFromEnd(const size_t index) {
+T& list<T>::removeFromEnd(const size_t index) {
     if (index >= this->size()) {
         throw std::out_of_range("Index out of range");
     }
@@ -106,8 +118,8 @@ std::ostream& operator<<(std::ostream& os, const list<T>& list) {
 
 
 /**
- * Definition of custom type set<T> derived from the standard type
- * std::set<T>. A set has properties:
+ * Inline implementations of custom type set<T> derived from the standard
+ * type std::set<T>. A set has properties:
  * - a set has no order, no access of the i-th element
  * - does not contain duplicates (same values multiple times)
  * 

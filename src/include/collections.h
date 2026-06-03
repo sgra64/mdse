@@ -14,6 +14,8 @@ namespace collections {
  * Operations:
  * - add(T &value)          - add value to list
  * - &list<T> << T &value   - operator to add value to list
+ * - T& at(i)               - return i'th element from list
+ * - T& [i]                 - operator that returns the i'th element
  * - insertAt(i, T &value)  - insert value after i-th position
  * - removeAt(i)            - remove i-th value (from begin)
  * - removeFromEnd(i)       - remove i-th value (from end)
@@ -22,7 +24,6 @@ namespace collections {
  * - print()                - print list
  * - ostream& << &list<T>   - operator to output list to ostream&
  */
-
 template <typename T>
 class list : public std::list<T> {
 
@@ -35,13 +36,15 @@ class list : public std::list<T> {
 
     list& operator<<(const T &value);
 
-    // list& operator>>(const T &value);
+    T& at(const int i);
+
+    T& operator[](const int i);
 
     void insertAt(const size_t index, const T& value);
 
-    T removeAt(const size_t index);
+    T& removeAt(const size_t index);
 
-    T removeFromEnd(const size_t index);
+    T& removeFromEnd(const size_t index);
 
     bool contains(const T &value) const;
 
@@ -69,7 +72,6 @@ class list : public std::list<T> {
  * - print()                - print set
  * - ostream& << &set<T>    - operator to output the set to ostream&
  */
-
 template <typename T>
 class set : public std::set<T> {
 
