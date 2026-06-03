@@ -10,6 +10,10 @@
 .devcontainer
 .bashrc
 .gitmodules
+branches
+
+# ignore Makefile dependencies file
+*.dep
 
 # ignore README.md to be deleted in local project
 README.md

@@ -40,7 +40,7 @@ list<T>& list<T>::operator<<(const T &value) {
 // }
 
 template <typename T>
-void list<T>::insertAt(size_t index, const T &value) {
+void list<T>::insertAt(const size_t index, const T &value) {
     if (index > this->size()) {
         throw std::out_of_range("Index out of range");
     }
@@ -50,7 +50,7 @@ void list<T>::insertAt(size_t index, const T &value) {
 }
 
 template <typename T>
-T list<T>::removeAt(size_t index) {
+T list<T>::removeAt(const size_t index) {
     if (index >= this->size()) {
         throw std::out_of_range("Index out of range");
     }
@@ -62,7 +62,7 @@ T list<T>::removeAt(size_t index) {
 }
 
 template <typename T>
-T list<T>::removeFromEnd(size_t index) {
+T list<T>::removeFromEnd(const size_t index) {
     if (index >= this->size()) {
         throw std::out_of_range("Index out of range");
     }

@@ -37,11 +37,11 @@ class list : public std::list<T> {
 
     // list& operator>>(const T &value);
 
-    void insertAt(size_t index, const T& value);
+    void insertAt(const size_t index, const T& value);
 
-    T removeAt(size_t index);
+    T removeAt(const size_t index);
 
-    T removeFromEnd(size_t index);
+    T removeFromEnd(const size_t index);
 
     bool contains(const T &value) const;
 

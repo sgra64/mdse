@@ -11,21 +11,20 @@
 # - https://makefiletutorial.com/
 # 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 
-# make variables:
-
+# static make variables:
      OUT := out
     OUTC := $(OUT)/compiled
      SRC := src
  INCLUDE := $(SRC)/include
      CPP := g++ -I./$(INCLUDE)
-
+# 
+# make variables with dynamic content:
     SRCS := $(shell find $(SRC) -name '*.cpp')
     OBJS := $(patsubst $(SRC)/%.cpp,$(OUTC)/%.o,$(SRCS))
 SRC_DIRS := $(shell find $(SRC) -type d)
 OBJ_DIRS := $(sort $(dir $(OBJS)))
 
-# main goal that builds the link goal and the $(OBJ_DIRS) folders
+# main goal that builds the link goal and creates the $(OBJ_DIRS) folders
 goal: $(OUTC) $(OUT)/main 
 
 # link goal
@@ -59,7 +58,7 @@ $(OUTC):
 # dependencies (manually maintained):
 
 $(OUTC)/main.o: $(SRC)/main.cpp $(INCLUDE)/collections.h $(INCLUDE)/collections.tpp
-# $(OUTC)/pset.o: $(SRC)/pset.cpp $(INCLUDE)/collections.h $(INCLUDE)/collections.tpp
+
 $(OUTC)/demo-b1/shape.o: $(SRC)/demo-b1/shape.cpp
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
