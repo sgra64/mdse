@@ -1,7 +1,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- B1 (SE-1)
 -->
-# B1: Projekt *"cpp-fun"*
+# D: Projekt *"cpp-fun"*
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
@@ -81,12 +81,13 @@ Das Projekt hat eine Struktur (*"scaffold"*), die aus Unterverzeichnissen besteh
    +--.gitignore        # file with patterns for git to ignore
    +--.gitmodules       # file that describes imported git-modules
    |
-   +-<.vscode>          # git-module with VSCode project settings for the project
+   +-<.vscode>          # folder with VSCode project settings for the project (git-module)
+   |   +--.bashrc           # script to source run() command
    |   +--settings.json     # project settings
    |   +--launch.json       # VSCode launch targets
    |   +--tasks.json        # program launch settings
    |
-   +-<.devcontainer>    # devcontainer information
+   +-<.devcontainer>    # folder with devcontainer information (git-module)
    |   +--devcontainer.json # devcontainer settings
    |   +--Dockerfile        # file to build devcontainer image
    |
@@ -98,11 +99,12 @@ Das Projekt hat eine Struktur (*"scaffold"*), die aus Unterverzeichnissen besteh
    |
    +-<out>              # folder with files created by the project build process
    |  |
-   |  +--main.out           # executable file produced by the build-process
+   |  +--main               # executable file produced by the build-process
    |  |
    |  +-<compiled>          # folder with compiled '.o'-files
    |
-   +--Makefile          # project Makefile to control the project build process
+   +--Makefile          # project 'Makefile' to control the project build process
+   +--Makefile.dep      # dependency file for 'make', if present
    |
 ```
 
@@ -353,6 +355,10 @@ Commit als Abzweigpunkt verwendet:
 
     - `git branch -d <branch-name>` -- Entfernen eines lokalen Branches mit
         allen aufgezeichneten Commit (diese gehen verloren).
+
+Graphisch werden branches wie folgt gezeichnet:
+
+<img src="https://raw.githubusercontent.com/sgra64/mdse/refs/heads/markup/img/d-main/git-branches.png" width="600"/>
 
 
 ```sh
