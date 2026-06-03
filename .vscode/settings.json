@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "*.rc": "shellscript",
-        "ostream": "cpp"
-    }
-}
