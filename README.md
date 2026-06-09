@@ -358,7 +358,7 @@ Commit als Abzweigpunkt verwendet:
 
 Graphisch werden branches wie folgt gezeichnet:
 
-<img src="https://raw.githubusercontent.com/sgra64/mdse/refs/heads/markup/img/d-main/git-branches.png" width="600"/>
+<img src="https://raw.githubusercontent.com/sgra64/mdse/refs/heads/markup/img/main/git-branches-1-main.png" width="600"/>
 
 
 ```sh
